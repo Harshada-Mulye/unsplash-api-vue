@@ -11,11 +11,11 @@ const AUTH_TOKEN = 'Client-ID lat2Noy1qfpAUFWGHE98gnyWo1Dl96G5AyHzKj_8Y0s';
  
 axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
  
-export const getPhotos = async (search) => {
+export const getPhotos = async (search,page_num) => {
  
     try {
         
-        const response = await axios.get(`search/photos?page=1&query=${search}`);
+        const response = await axios.get(`search/photos?page=${page_num}&query=${search}`);
  
         console.log(response);
  
