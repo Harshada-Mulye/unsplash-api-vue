@@ -1,8 +1,8 @@
 <template>
 <div>
- 
-   <input type="text" v-model="t_search"><button @click="search">Click for search</button>
-      <div>
+<Input :t_search="t_search" @search="search" @next="next" @prev="prev" />
+
+  <div>
       <p>selected pic</p>
      <div v-if="this.selected_picture">
          <h3>This picture got
@@ -21,8 +21,7 @@
      
     </div>
      <div>
-  <button @click="next" >Next</button>
-   <button @click="prev" >Prev</button>
+
   </div>
 </div>
 </template>
@@ -30,41 +29,52 @@
 <script>
  
  import { getPhotos } from "@/api/api.js";
+import Input from './Input.vue';
+ 
 
 export default {
+  components:{
+    Input
 
+    
+  },
     data: function(){
  
         return {
  
             results: [],
-            t_search:"",
+           
             page_num:1,
             isShowing:true,
-            selected_picture:null
+            selected_picture:null,
+            t_search:""
         }
-        
-    }
+       
+        }
+       
     ,methods: {
-
-        search: async function(){
-        
-        const data = await getPhotos(this.t_search,this.page_num);
+       
+        search: async function(t_search){
+      
+        const data = await getPhotos(t_search,this.page_num);
          console.log(data); 
          this.results = data.results;
+         this.t_search=t_search
      
-        },
-         next: async function(){
-            
+   },
+         next: async function(t_search){
+         // console.log(t_search)  
+         
            this.page_num++;
-          const data = await getPhotos(this.t_search,this.page_num);
+           
+          const data = await getPhotos(t_search,this.page_num);
           this.results = data.results;
           console.log(this.results)
         },
-         prev: async function(){
+         prev: async function(t_search){
             if(this.page_num>=1)
            this.page_num--;
-          const data = await getPhotos(this.t_search,this.page_num);
+          const data = await getPhotos(t_search,this.page_num);
           this.results = data.results;
           console.log(this.results)
         },
@@ -77,7 +87,6 @@ export default {
          
     }
     
-
 }
 </script>
  
